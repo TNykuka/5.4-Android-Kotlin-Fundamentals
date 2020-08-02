@@ -102,23 +102,24 @@ class GameViewModel : ViewModel() {
         Log.i("GameViewModel", "GameViewModel created!")
         resetList()
         nextWord()
-    }
 
-    // Creates a timer which triggers the end of the game when it finishes
-    timer = object : CountDownTimer(COUNTDOWN_TIME, ONE_SECOND) {
+        // Creates a timer which triggers the end of the game when it finishes
+        timer = object : CountDownTimer(COUNTDOWN_TIME, ONE_SECOND) {
 
-        override fun onTick(millisUntilFinished: Long)
-        {
-            _currentTime.value = millisUntilFinished/ONE_SECOND
+            override fun onTick(millisUntilFinished: Long)
+            {
+                _currentTime.value = millisUntilFinished/ONE_SECOND
+            }
+
+            override fun onFinish() {
+                _currentTime.value = DONE
+                onGameFinish()
+            }
         }
 
-        override fun onFinish() {
-            _currentTime.value = DONE
-            onGameFinish()
-        }
-    }
+        timer.start()
 
-    timer.start()
+    }
 
     /**
      * Callback called when the ViewModel is destroyed
